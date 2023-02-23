@@ -1,36 +1,77 @@
-# using last element as pivot
+import random
 
-# function to find the partition position
-def partition(array, low, high) -> int:
-    # choosing last element as pivot
-    pivot = array[high]
-    # pointer for greate element
-    i = low - 1
-    # traverse through all elements
-    for j in range(low, high):
-        # compare each element with pivot
-        if array[j] <= pivot:
-            # if element smaller than pivot
-            # swap it with the greater element pointed by i
+
+def partition(arr, l, h):
+    i = (l - 1)
+    x = arr[h]
+
+    for j in range(l, h):
+        if arr[j] <= x:
+            # increment index of smaller element
             i = i + 1
-            # swapping element at i with element at j
-            (array[i], array[j]) = (array[j], array[i])
-    # swap the pivot element with the greater element specified by i
-    (array[i + 1], array[high]) = (array[high], array[i + 1])
-    # return the position from where partition is done
-    return i + 1
+            arr[i], arr[j] = arr[j], arr[i]
 
-def quickSort(array, low, high):
-    if low < high:
-        # find pivot element such that
-        # element smaller than pivot are on the left
-        # element greater than pivot are on the right
-        pi = partition(array, low, high)
-        # recursive call on the left of pivot
-        quickSort(array, low, pi - 1)
-        # recursive call on the right of pivot
-        quickSort(array, pi + 1, high)
+    arr[i + 1], arr[h] = arr[h], arr[i + 1]
+    return (i + 1)
 
+
+def partitionRand(arr, l, h):
+    # random element between the
+    # lower and higher element
+    randpivot = random.randrange(l, h)
+    # swapping the starting element of
+    # the array and the pivot
+    arr[l], arr[h] = \
+        arr[randpivot], arr[l]
+    return partition(arr, l, h)
+
+
+# Function to do Quick sort
+# arr[] --> Array to be sorted,
+# l  --> Starting index,
+# h  --> Ending index
+def quickSort(arr, l, h):
+    # Create an auxiliary stack
+    size = h - l + 1
+    stack = [0] * (size)
+
+    # initialize top of stack
+    top = -1
+
+    # push initial values of l and h to stack
+    top = top + 1
+    stack[top] = l
+    top = top + 1
+    stack[top] = h
+
+    # Keep popping from stack while is not empty
+    while top >= 0:
+
+        # Pop h and l
+        h = stack[top]
+        top = top - 1
+        l = stack[top]
+        top = top - 1
+
+        # Set pivot element at its correct position in
+        # sorted array
+        p = partitionRand(arr, l, h)
+
+        # If there are elements on left side of pivot,
+        # then push left side to stack
+        if p - 1 > l:
+            top = top + 1
+            stack[top] = l
+            top = top + 1
+            stack[top] = p - 1
+
+        # If there are elements on right side of pivot,
+        # then push right side to stack
+        if p + 1 < h:
+            top = top + 1
+            stack[top] = p + 1
+            top = top + 1
+            stack[top] = h
 
 # Average complexity O(N log(N))
 # Worst case O(N^2)
