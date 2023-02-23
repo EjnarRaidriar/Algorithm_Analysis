@@ -7,7 +7,8 @@ from HeapSort import heapSort
 from TimeSort import timeSort
 
 # random array with 1000 int values >1 and <1000000
-randData = np.random.randint(1, 100000, 500)
+randData = np.random.randint(1, 100000, 10000)
+
 sortedData = []
 
 times = []
@@ -64,30 +65,42 @@ end_time = time.time()
 times.append(round(end_time - start_time, 6))
 print("sorted data: " + str(times[7]) + "\n")
 
-# preparing data for graph
-sortType = ['random', 'sorted']
-time = {
-    "QuickSort": (times[0], times[1]),
-    "MergeSort": (times[2], times[3]),
-    "HeapSort": (times[4], times[5]),
-    "TimeSort": (times[6], times[7])
-}
+# # preparing data for graph
+# sortType = ['random', 'sorted']
+# time = {
+#     "QuickSort": (times[0], times[1]),
+#     "MergeSort": (times[2], times[3]),
+#     "HeapSort": (times[4], times[5]),
+#     "TimeSort": (times[6], times[7])
+# }
+#
+# x = np.arange(len(sortType))
+# width = 0.2
+# multiplier = 0
+#
+# fig, ax = plt.subplots(constrained_layout=True)
+#
+# for attribute, measurement in time.items():
+#     offset = width * multiplier
+#     rects = ax.bar(x+offset, measurement, width, label=attribute)
+#     ax.bar_label(rects, padding=3)
+#     multiplier += 1
+#
+# ax.set_ylabel('Time (s)')
+# ax.set_title('Sorting Algorithms')
+# ax.set_xticks(x+width, sortType)
+# ax.legend(loc='upper right')
+#
+# plt.show()
 
-x = np.arange(len(sortType))
-width = 0.2
-multiplier = 0
+# preparing data for the next graph
+sortType = ["QuickSort", "MergeSort", "HeapSort", "TimeSort"]
+time = [times[0], times[2], times[4], times[6]]
+c = ['blue', 'yellow', 'green', 'red']
 
-fig, ax = plt.subplots(constrained_layout=True)
-
-for attribute, measurement in time.items():
-    offset = width * multiplier
-    rects = ax.bar(x+offset, measurement, width, label=attribute)
-    ax.bar_label(rects, padding=3)
-    multiplier += 1
-
-ax.set_ylabel('Time (s)')
-ax.set_title('Sorting Algorithms')
-ax.set_xticks(x+width, sortType)
-ax.legend(loc='upper right')
+barplot = plt.bar(sortType, time, color=c)
+plt.bar_label(barplot,labels=time,label_type="edge")
+plt.ylabel('Time (s)')
+plt.title('Sorting Algorithms')
 
 plt.show()
